@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FiddlerAmfParser_DSMessageOutputProcessor_net40", "FiddlerAmfParser_DSMessageOutputProcessor\FiddlerAmfParser_DSMessageOutputProcessor_net40.csproj", "{42887383-FE4E-4473-B1A1-AD5807FB8FED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FiddlerAmfParser_DSMessageOutputProcessor_net35", "FiddlerAmfParser_DSMessageOutputProcessor\FiddlerAmfParser_DSMessageOutputProcessor_net35.csproj", "{29A32480-C4FE-411C-8AB9-3CBE73F942C2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{42887383-FE4E-4473-B1A1-AD5807FB8FED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42887383-FE4E-4473-B1A1-AD5807FB8FED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42887383-FE4E-4473-B1A1-AD5807FB8FED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42887383-FE4E-4473-B1A1-AD5807FB8FED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29A32480-C4FE-411C-8AB9-3CBE73F942C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29A32480-C4FE-411C-8AB9-3CBE73F942C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29A32480-C4FE-411C-8AB9-3CBE73F942C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29A32480-C4FE-411C-8AB9-3CBE73F942C2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
