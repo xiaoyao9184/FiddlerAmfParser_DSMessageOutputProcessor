@@ -7,6 +7,28 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FiddlerAmfParser_DSMessageO
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FiddlerAmfParser_DSMessageOutputProcessor_net35", "FiddlerAmfParser_DSMessageOutputProcessor\FiddlerAmfParser_DSMessageOutputProcessor_net35.csproj", "{29A32480-C4FE-411C-8AB9-3CBE73F942C2}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{3E6F0F52-9DC1-4487-AD4C-F66C7C9DE092}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FiddlerAmfParser_0.2.2.0.Fiddler2_InspectorLibs", "FiddlerAmfParser_0.2.2.0.Fiddler2_InspectorLibs", "{0BCF3BBE-F3B8-4A63-8150-2E37E8E6F0BB}"
+	ProjectSection(SolutionItems) = preProject
+		lib\FiddlerAmfParser_0.2.2.0.Fiddler2_InspectorLibs\antlr.runtime.dll = lib\FiddlerAmfParser_0.2.2.0.Fiddler2_InspectorLibs\antlr.runtime.dll
+		lib\FiddlerAmfParser_0.2.2.0.Fiddler2_InspectorLibs\FiddlerAmfParser.dll = lib\FiddlerAmfParser_0.2.2.0.Fiddler2_InspectorLibs\FiddlerAmfParser.dll
+		lib\FiddlerAmfParser_0.2.2.0.Fiddler2_InspectorLibs\FluorineFx.dll = lib\FiddlerAmfParser_0.2.2.0.Fiddler2_InspectorLibs\FluorineFx.dll
+		lib\FiddlerAmfParser_0.2.2.0.Fiddler2_InspectorLibs\log4net.dll = lib\FiddlerAmfParser_0.2.2.0.Fiddler2_InspectorLibs\log4net.dll
+		lib\FiddlerAmfParser_0.2.2.0.Fiddler2_InspectorLibs\Newtonsoft.Json.dll = lib\FiddlerAmfParser_0.2.2.0.Fiddler2_InspectorLibs\Newtonsoft.Json.dll
+		lib\FiddlerAmfParser_0.2.2.0.Fiddler2_InspectorLibs\StructureMap.dll = lib\FiddlerAmfParser_0.2.2.0.Fiddler2_InspectorLibs\StructureMap.dll
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FiddlerAmfParser_0.2.2.0.Fiddler4_InspectorLibs", "FiddlerAmfParser_0.2.2.0.Fiddler4_InspectorLibs", "{6C84AAA6-3D95-4B73-B4CC-2D1D07E3D32B}"
+	ProjectSection(SolutionItems) = preProject
+		lib\FiddlerAmfParser_0.2.2.0.Fiddler4_InspectorLibs\antlr.runtime.dll = lib\FiddlerAmfParser_0.2.2.0.Fiddler4_InspectorLibs\antlr.runtime.dll
+		lib\FiddlerAmfParser_0.2.2.0.Fiddler4_InspectorLibs\FiddlerAmfParser.dll = lib\FiddlerAmfParser_0.2.2.0.Fiddler4_InspectorLibs\FiddlerAmfParser.dll
+		lib\FiddlerAmfParser_0.2.2.0.Fiddler4_InspectorLibs\FluorineFx.dll = lib\FiddlerAmfParser_0.2.2.0.Fiddler4_InspectorLibs\FluorineFx.dll
+		lib\FiddlerAmfParser_0.2.2.0.Fiddler4_InspectorLibs\log4net.dll = lib\FiddlerAmfParser_0.2.2.0.Fiddler4_InspectorLibs\log4net.dll
+		lib\FiddlerAmfParser_0.2.2.0.Fiddler4_InspectorLibs\Newtonsoft.Json.dll = lib\FiddlerAmfParser_0.2.2.0.Fiddler4_InspectorLibs\Newtonsoft.Json.dll
+		lib\FiddlerAmfParser_0.2.2.0.Fiddler4_InspectorLibs\StructureMap.dll = lib\FiddlerAmfParser_0.2.2.0.Fiddler4_InspectorLibs\StructureMap.dll
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +46,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0BCF3BBE-F3B8-4A63-8150-2E37E8E6F0BB} = {3E6F0F52-9DC1-4487-AD4C-F66C7C9DE092}
+		{6C84AAA6-3D95-4B73-B4CC-2D1D07E3D32B} = {3E6F0F52-9DC1-4487-AD4C-F66C7C9DE092}
 	EndGlobalSection
 EndGlobal

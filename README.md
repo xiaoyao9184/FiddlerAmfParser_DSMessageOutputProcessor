@@ -45,5 +45,5 @@ Final, run Fiddler and go 'AMF' tab.
 
 
 ###4Chinese
-[ÆğÔ´](https://xiaoyao9184.wordpress.com/2015/12/01/amf-flex-dsmessage-in-other-lib/)
-[Ï¸½Ú](https://xiaoyao9184.wordpress.com/2015/12/04/amf-fiddleramfparser-dsmessageoutputprocessor-detail/)
+[èµ·æº](https://xiaoyao9184.wordpress.com/2015/12/01/amf-flex-dsmessage-in-other-lib/)
+[ç»†èŠ‚](https://xiaoyao9184.wordpress.com/2015/12/04/amf-fiddleramfparser-dsmessageoutputprocessor-detail/)

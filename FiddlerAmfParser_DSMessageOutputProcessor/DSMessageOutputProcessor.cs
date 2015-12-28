@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using FiddlerAmfParser.AMF3;
+using FiddlerAmfParser.Flex.Messaging.IO;
 using FiddlerAmfParser.Flex.Messaging.Messages;
 using FiddlerAmfParser.OutputProcessing;
 using FluorineFx;
@@ -41,7 +42,7 @@ namespace FiddlerAmfParser.DSMessageOutputProcessor
         private TreeNode _versionNode = null;
         private TreeNode _headerRootNode = null;
         private TreeNode _bodyRootNode = null;
-
+        private AMFMessage _messageData = null;
 
         #region IOutputProcessorPlugin
 
@@ -49,9 +50,10 @@ namespace FiddlerAmfParser.DSMessageOutputProcessor
 
         public void ProcessAmfMessage(ParserContext ctx, AMFMessage messageData)
         {
+            _messageData = messageData;
             TreeView tree = ctx.Output.TreeView;
             _versionNode = tree.Nodes["Version"];
-            _headerRootNode = tree.Nodes.Add("Header", "Header");
+            _headerRootNode = tree.Nodes.Add("Header", "Header: [" + messageData.HeaderCount + "]");
             for (var i = 0; i < messageData.HeaderCount; i++)
             {
                 var headerNode = _headerRootNode.Nodes.Add("" + i, "[" + i + "]");
@@ -62,10 +64,18 @@ namespace FiddlerAmfParser.DSMessageOutputProcessor
             }
 
             //save body node for ProcessAmfBody
-            _bodyRootNode = tree.Nodes.Add("Body", "Body");
+            _bodyRootNode = tree.Nodes.Add("Body", "Body: [" + messageData.BodyCount + "]");
 
             //for dynamic add node 
-            ctx.Output.TreeView.BeforeExpand += TreeView_BeforeExpand;
+            tree.BeforeExpand += TreeView_BeforeExpand;
+
+            //context menu copy json to clipboard
+            ContextMenu mnuContextMenu = new ContextMenu();
+
+            MenuItem mnuItemJson = new MenuItem("Json to clipboard");
+            mnuItemJson.Click += TreeView_ContextMenuClick;
+            mnuContextMenu.MenuItems.Add(mnuItemJson);
+            tree.ContextMenu = mnuContextMenu;
         }
 
         public void ProcessAmfBody(ParserContext ctx, AMFBody bodyData)
@@ -91,6 +101,17 @@ namespace FiddlerAmfParser.DSMessageOutputProcessor
         #endregion
 
         #region TreeView
+
+        /// <summary>
+        /// AMF message to json copy clipboard
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TreeView_ContextMenuClick(object sender, EventArgs e)
+        {
+            string json = JsonConvert.SerializeObject(_messageData);
+            Clipboard.SetText(json);
+        }
 
         /// <summary>
         /// when expand fake node, object property must change to TreeNode and add into this node
@@ -120,7 +141,7 @@ namespace FiddlerAmfParser.DSMessageOutputProcessor
         /// <summary>
         /// Remove FiddlerAmfParser Default Processor's tree node
         /// </summary>
-        /// <param treeName="tree"></param>
+        /// <param name="tree"></param>
         private void RemoveOtherProcessBody(TreeView tree)
         {
             int index = tree.Nodes.IndexOf(_bodyRootNode);
@@ -156,9 +177,20 @@ namespace FiddlerAmfParser.DSMessageOutputProcessor
                 string type = ": " + ba.ToGUIDString();
                 resultTreeNode.Text += type;
             }
-            else if (amfObject is ASObject || amfObject is Dictionary<string, Object>)
+            else if (amfObject is ASObject)
             {
-                string type = ": {" + amfObject.GetType().Name + "}";
+                ASObject aso = amfObject as ASObject;
+                string type = ": <" + aso.TypeName + ">";
+                resultTreeNode.Text += type;
+                
+                foreach (var kv in aso)
+                {
+                    resultTreeNode.Nodes.Add(CreateTreeNode(kv.Key, kv.Value));
+                }
+            }
+            else if (amfObject is Dictionary<string, Object>)
+            {
+                string type = ": <>";
                 resultTreeNode.Text += type;
 
                 Dictionary<string, Object> map = amfObject as Dictionary<string, Object>;
@@ -179,6 +211,14 @@ namespace FiddlerAmfParser.DSMessageOutputProcessor
                     resultTreeNode.Nodes.Add(CreateTreeNode("[" + index + "]", item));
                     index++;
                 }
+            }
+            else if (amfObject is IClassAlias)
+            {
+                IClassAlias ica = amfObject as IClassAlias;
+                string type = ": {" + ica.getAlias() + "}";
+                resultTreeNode.Text += type;
+                resultTreeNode.Tag = amfObject;
+                resultTreeNode.Nodes.Add("NONE", "...");
             }
             else
             {
@@ -210,37 +250,62 @@ namespace FiddlerAmfParser.DSMessageOutputProcessor
         /// <returns></returns>
         private TreeNode CreateNoChildNode(string treeName, object amfObject)
         {
-            TreeNode resultNode = new TreeNode(treeName);
+            TreeNode resultTreeNode = new TreeNode(treeName);
             if (amfObject == null)
             {
                 string type = ": null";
-                resultNode.Text += type;
+                resultTreeNode.Text += type;
             }
             else if (amfObject is String)
             {
                 string type = ": " + (amfObject as String);
-                resultNode.Text += type;
+                resultTreeNode.Text += type;
             }
             else if (amfObject is ByteArray)
             {
                 ByteArray ba = amfObject as ByteArray;
                 string type = ": " + ba.ToGUIDString();
-                resultNode.Text += type;
+                resultTreeNode.Text += type;
             }
-            else if (amfObject is ASObject || amfObject is Dictionary<string, Object>)
+            else if (amfObject is ASObject)
             {
-                string type = ": {" + amfObject.GetType().Name + "}";
-                resultNode.Text += type;
-                resultNode.Tag = amfObject;
-                resultNode.Nodes.Add("NONE", "...");
+                ASObject aso = amfObject as ASObject;
+                string type = ": <" + aso.TypeName + ">";
+                resultTreeNode.Text += type;
+                if (aso.Count != 0)
+                {
+                    resultTreeNode.Tag = amfObject;
+                    resultTreeNode.Nodes.Add("NONE", "...");
+                }
+            }
+            else if (amfObject is Dictionary<string, Object>)
+            {
+                string type = ": <>";
+                resultTreeNode.Text += type;
+                if ((amfObject as Dictionary<string, Object>).Count != 0)
+                {
+                    resultTreeNode.Tag = amfObject;
+                    resultTreeNode.Nodes.Add("NONE", "...");
+                }
             }
             else if (amfObject is IList)
             {
                 IList list = amfObject as IList;
                 string type = ": [" + list.Count + "]";
-                resultNode.Text += type;
-                resultNode.Tag = amfObject;
-                resultNode.Nodes.Add("NONE", "...");
+                resultTreeNode.Text += type;
+                if (list.Count != 0)
+                {
+                    resultTreeNode.Tag = amfObject;
+                    resultTreeNode.Nodes.Add("NONE", "...");
+                }
+            }
+            else if (amfObject is IClassAlias)
+            {
+                IClassAlias ica = amfObject as IClassAlias;
+                string type = ": {" + ica.getAlias() + "}";
+                resultTreeNode.Text += type;
+                resultTreeNode.Tag = amfObject;
+                resultTreeNode.Nodes.Add("NONE", "...");
             }
             else
             {
@@ -249,16 +314,18 @@ namespace FiddlerAmfParser.DSMessageOutputProcessor
                 if (t.IsValueType)
                 {
                     string type = ": " + amfObject.ToString();
-                    resultNode.Text += type;
+                    resultTreeNode.Text += type;
                 }
                 else
                 {
-                    resultNode.Nodes.Add("NONE", "...");
-                    resultNode.Tag = amfObject;
+                    string type = ": {" + amfObject.GetType().Name + "}";
+                    resultTreeNode.Text += type;
+                    resultTreeNode.Nodes.Add("NONE", "...");
+                    resultTreeNode.Tag = amfObject;
                 }
             }
 
-            return resultNode;
+            return resultTreeNode;
         }
 
         /// <summary>
